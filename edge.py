@@ -11,10 +11,10 @@ from skimage.filters import gaussian
 
 #----------------------function box----------------------------
 
-def gradian(i,j,matrix):                                             # function for sobel filter
-    Gx = 2*(matrix[i,j+1]-matrix[i,j-1]) + (matrix[i-1,j+1]+matrix[i+1,j+1]-matrix[i-1,j-1]-matrix[i+1,j-1])
-    Gy = 2*(matrix[i+1,j]-matrix[i-1,j]) + (matrix[i+1,j-1]+matrix[i+1,j+1]-matrix[i-1,j-1]-matrix[i-1,j+1])
-    return int(((Gx)**2 +(Gy)**2 )**0.5)
+#def gradian(i,j,matrix):                                             # function for sobel filter write by myself
+    #Gx = 2*(matrix[i,j+1]-matrix[i,j-1]) + (matrix[i-1,j+1]+matrix[i+1,j+1]-matrix[i-1,j-1]-matrix[i+1,j-1])
+    #Gy = 2*(matrix[i+1,j]-matrix[i-1,j]) + (matrix[i+1,j-1]+matrix[i+1,j+1]-matrix[i-1,j-1]-matrix[i-1,j+1])
+    #return int(((Gx)**2 +(Gy)**2 )**0.5)
 #                                                here we calculate gradiant of 3x3 matrix which central object [i,j]
 
 #--------img input box--------------------------------------
