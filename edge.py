@@ -19,8 +19,8 @@ from skimage.filters import gaussian
 
 #------------------------img input box------------------------------
 
-#img = cv2.imread('F:/univercity/projects/dmath/hh/hh.JPG')
-img = cv2.imread('F:/univercity/projects/dmath/hh/hhh.jpg')
+img = cv2.imread('F:/univercity/projects/dmath/hh/hh.JPG')
+#img = cv2.imread('F:/univercity/projects/dmath/hh/hhh.jpg')
 
 height , width , channels = img.shape                              # for loops need this line
 
@@ -63,9 +63,16 @@ for i in range(1,height-1):
 
 guimg= gaussian(sobimg,sigma=0.5)
 
+_ , sobimg = cv2.threshold(sobimg,127,255,cv2.THRESH_BINARY)    # change img to binary for function findcounters
 
 #---------------------biggest container finding box----------------------
 
+sobimg = cv2.convertScaleAbs(sobimg)
+contour_img = np.zeros_like(img)
+
+counters, _ = cv2.findContours(sobimg,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+largest=max(counters,key=cv2.contourArea)
+cv2.drawContours(contour_img,[largest],-1,(0,0,255),2)
 
 
 #-----------------------output box---------------------------------------
@@ -74,5 +81,6 @@ cv2.imshow('orginal',img)
 cv2.imshow('grayImage',grayimg)
 cv2.imshow('bullued',guimg)
 cv2.imshow('sobel filtered',sobimg)
+cv2.imshow('ok',contour_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows
