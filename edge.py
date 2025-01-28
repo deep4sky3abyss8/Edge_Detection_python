@@ -47,7 +47,7 @@ sobel_y = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
 for i in range(1,height-1):
     for j in range(1,width-1):
-        #sobimg[i,j] = gradian(i,j,grayimg)   # we can alse use this way but its not best way
+        #sobimg[i,j] = gradian(i,j,grayimg)                      # we can alse use this way but its not best way
         
         #+++++++++++++++++++++++++++++++++
         region = grayimg[i-1:i+2, j-1:j+2]
@@ -57,7 +57,13 @@ for i in range(1,height-1):
         
         sobimg[i, j] = (gx**2 + gy**2)**0.5
         #+++++++++++++++++++++++++++++++++
-
+#======================================================================================================================#
+#top way is ok to find edges but because of handwriting code , edges are not monolithic so program cant find true shape#
+# so if we use numpy and cv2 functions it will be completely  !  so i comment it                                                         #
+#sobel_x = cv2.Sobel(grayimg, cv2.CV_64F, 1, 0, ksize=3)                                                                #
+#sobel_y = cv2.Sobel(grayimg, cv2.CV_64F, 0, 1, ksize=3)                                                                #
+#sobimg = cv2.magnitude(sobel_x, sobel_y)                                                                               #
+#======================================================================================================================#
 
 #---------------------gowse filter to reduce noise box------------------
 
@@ -74,6 +80,7 @@ counters, _ = cv2.findContours(sobimg,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 largest=max(counters,key=cv2.contourArea)
 cv2.drawContours(contour_img,[largest],-1,(0,0,255),2)
 
+contour_img= gaussian(contour_img,sigma=0.5)
 
 #-----------------------output box---------------------------------------
 
