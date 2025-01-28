@@ -2,8 +2,6 @@
 
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-import math
 
 from skimage import io
 from skimage.filters import gaussian
@@ -74,13 +72,12 @@ _ , sobimg = cv2.threshold(sobimg,127,255,cv2.THRESH_BINARY)    # change img to 
 #---------------------biggest container finding box----------------------
 
 sobimg = cv2.convertScaleAbs(sobimg)
-contour_img = np.zeros_like(img)
+contour_img = np.zeros_like(img)                                 # making a black img in size of original img
 
-counters, _ = cv2.findContours(sobimg,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-largest=max(counters,key=cv2.contourArea)
-cv2.drawContours(contour_img,[largest],-1,(0,0,255),2)
+counters, _ = cv2.findContours(sobimg,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)  # finding counters
+largest=max(counters,key=cv2.contourArea)                                        # finding largest
+cv2.drawContours(contour_img,[largest],-1,(0,0,255),2)                             # drawing on black page
 
-contour_img= gaussian(contour_img,sigma=0.5)
 
 #-----------------------output box---------------------------------------
 
