@@ -16,9 +16,10 @@ from skimage.filters import gaussian
 #                                                here we calculate gradiant of 3x3 matrix which central object [i,j]
 
 #------------------------img input box------------------------------
-#address=input()
-img = cv2.imread('F:/univercity/projects/dmath/hh/hh.JPG')
-#img = cv2.imread(address)
+
+address=input()
+#img = cv2.imread('F:/univercity/projects/dmath/hh/hh.JPG')
+img = cv2.imread(address)
 
 height , width , channels = img.shape                              # for loops need this line
 
