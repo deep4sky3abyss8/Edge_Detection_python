@@ -16,9 +16,9 @@ from skimage.filters import gaussian
 #                                                here we calculate gradiant of 3x3 matrix which central object [i,j]
 
 #------------------------img input box------------------------------
-
+#address=input()
 img = cv2.imread('F:/univercity/projects/dmath/hh/hh.JPG')
-#img = cv2.imread('F:/univercity/projects/dmath/hh/hhh.jpg')
+#img = cv2.imread(address)
 
 height , width , channels = img.shape                              # for loops need this line
 
@@ -34,6 +34,11 @@ for i in range(height):
         grayimg[i,j]=grayval                                      # already we can apply this all on original img but we do it to check changes by steps
 
 
+#---------------------gowse filter to reduce noise box------------------
+
+guimg= gaussian(grayimg,sigma=0.2)
+
+
 #--------------------edge finding sobel filter box------------------
 
 sobimg=np.zeros((height,width),dtype=np.uint8)
@@ -41,6 +46,7 @@ sobimg=np.zeros((height,width),dtype=np.uint8)
 #+++++++++++++++++++++++++++++
 sobel_x = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])         # sobel array to product matrises
 sobel_y = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+sobelgradian=[]
 #+++++++++++++++++++++++++++++
 
 for i in range(1,height-1):
@@ -48,13 +54,24 @@ for i in range(1,height-1):
         #sobimg[i,j] = gradian(i,j,grayimg)                      # we can alse use this way but its not best way
         
         #+++++++++++++++++++++++++++++++++
-        region = grayimg[i-1:i+2, j-1:j+2]
+        region = guimg[i-1:i+2, j-1:j+2]
         
         gx = np.sum(sobel_x * region)  
         gy = np.sum(sobel_y * region) 
         
         sobimg[i, j] = (gx**2 + gy**2)**0.5
+        sobelgradian.append((gx**2 + gy**2)**0.5)
         #+++++++++++++++++++++++++++++++++
+
+midgradian = sum(sobelgradian)/len(sobelgradian)
+
+for i in range(1,height-1):
+    for j in range(1,width-1):
+        if sobimg[i,j] > midgradian+midgradian//2 :
+            sobimg[i,j]=255
+        else :
+            sobimg[i,j]=0
+
 #======================================================================================================================#
 #top way is ok to find edges but because of handwriting code , edges are not monolithic so program cant find true shape#
 # so if we use numpy and cv2 functions it will be completely  !  so i comment it                                                         #
@@ -63,11 +80,8 @@ for i in range(1,height-1):
 #sobimg = cv2.magnitude(sobel_x, sobel_y)                                                                               #
 #======================================================================================================================#
 
-#---------------------gowse filter to reduce noise box------------------
-
-guimg= gaussian(sobimg,sigma=0.5)
-
 _ , sobimg = cv2.threshold(sobimg,127,255,cv2.THRESH_BINARY)    # change img to binary for function findcounters
+
 
 #---------------------biggest container finding box----------------------
 
